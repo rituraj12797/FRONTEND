@@ -202,7 +202,7 @@ background-image: linear-gradient(black,black);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url('./assets/man.png');
+    background-color: white;
     align-self: center;
     justify-self: start;
 }
@@ -400,7 +400,6 @@ input:-internal-autofill-selected{
     border-radius: 1rem;
     height: 90%;
     width: 20%;
-    background-image: url('./assets/cup.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

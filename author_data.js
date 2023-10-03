@@ -100,29 +100,25 @@ var translate = {
 var username = document.querySelector("#name_input");
 var slug = document.querySelector("#slug");
 var bio = document.querySelector("#bio");
-var link = document.querySelector("#la");
+// var link = document.querySelector("#la");
 
-link.disabled = true;
-slug.disabled = true;
-username.disabled = true;
-bio.disabled = true;
+// link.disabled = true;
+// slug.disabled = true;
+// username.disabled = true;
+// bio.disabled = true;
 
-link.textContent = "https://www.linkedin.com/in/ritu-raj-67b378175/";
+// link.textContent = "https://www.linkedin.com/in/ritu-raj-67b378175/";
 bio.defaultValue =
   " hey world i am jp morgan from california i love blogging and coding stuff";
 slug.defaultValue = "/morgan-2004";
 username.defaultValue = "J P Morgan";
 console.log(" hello world");
 
-function follower() {
+function follower(follower_no,username,id) {
   // async function image() {
   //     data =
   // }
-  var follower_no = 1;
-  var username = "ritu raj";
-  var user_slug = "/morgan_2005";
-  var user_blog_count = 64;
-  var follower_container = document.querySelector(".follower_container");
+  var follower_container = document.querySelector('.follower_container')
   var follower_component = `<div class="${follower_no} follower">
 <div class="logo">
     <i class="fa-solid fa-circle-user     user_logo" style="color: #ffc700;"></i>
@@ -130,29 +126,24 @@ function follower() {
 <div class="info">
     <div class="name_user">${username}</div>
     <div class="follower_data">
-        <div class="slug_tag"> <span class="slug_text_small">Slug:</span> ${user_slug}</div>
-        <div class="blog_no">
-            <span>Blogs: </span> <span id="blog_count"> ${user_blog_count} </span>
-        </div>
+        
+       
     </div>
 </div>
-<a class="follow" style="color:#000000;text-decoration:none;display:flex;justify-content:center;align-items:center;" href="author_data.html">view</a>
+<a class="follow" style="color:#000000;text-decoration:none;display:flex;justify-content:center;align-items:center;" href="./author_data.html?id=${id}">view</a>
 
 </div>`;
   follower_container.innerHTML += follower_component;
 }
 
-function blog_component(title, discription, genre, like_count, image) {
-  var title = "mecha";
-  var discription =
-    "rhbcxxhjvbhvhjvbcxhx hxch vitae deserunt adipisci reiciendis quia sint quasi, architecto voluptatum quis! vitae deserunt adipisci reiciendis quia sint quasi, architecto voluptatum quis! cxhjxhjgzghjbvb hjz vj";
-  var genre = "Technology";
-  var like_count = 64;
-  var blog_count = 1;
+function blog_component(blog_count,id,title, genre, like_count, imagesrc) {
+  // img_src,titl,genr,id
+  
   var blog_container = document.querySelector(".blogs_container");
   var blog_component = ` <div class="user_blog ${blog_count}">
 
-<div class="blog_image">
+    
+    <div class="blog_image" style = "background-image: url('${imagesrc}');">
 </div>
 <div class="blog_desc">
     <div class="title">${title}</div>
@@ -161,11 +152,10 @@ function blog_component(title, discription, genre, like_count, image) {
         <div class="caetogry">${genre}</div>
         <div class="likes">Likes: <span class="like">${like_count}</span> </div>
     </div>
-    <div class="Brief">${discription}
-    </div>
+ 
     <div class="view">
         <div id="view_text">
-           <a href="./blogRead.html" id="read_more_button"> Read more </a>
+           <a href="./blogRead.html?id=${id}" id="read_more_button"> Read more </a>
         </div>
     </div>
 </div>
@@ -184,7 +174,7 @@ console.log(id);
 
 const getblogs = async (e) => {
   e.preventDefault();
-  const id = JSON.parse(localStorage.getItem("user")).user._id;
+  // const id = JSON.parse(localStorage.getItem("user")).user._id;
   const headerss = new Headers();
   let token = JSON.parse(localStorage.getItem("user")).token
   console.log(token)
@@ -200,6 +190,7 @@ const getblogs = async (e) => {
   headerss.append("Connection", "keep-alive");
   console.log(JSON.parse(localStorage.getItem("user")).user._id)
   console.log("fhjsdvfhjvsdhjfvsdhjk")
+  console.log(id)
   const response = await fetch(
     `https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs/${id}`,
     {
@@ -210,12 +201,25 @@ const getblogs = async (e) => {
   const data = await response.json();
   // for Loop laga do
   console.log(data);
+
+
+  if (response.ok) {
+    for (let i=0 ;i < data.blogs.length ;i++  ) {
+      // blog_count,id,title, genre, like_count, imagesrc
+      blog_component(i+1,data?.blogs[i]._id,data.blogs[i].title,data.blogs[i].category,data.blogs[i]?.likesCount,data.blogs[i]?.thumbnail.secure_url);
+    }
+};
+
+
+
+
 };
 
 // window.addEventListener("click", getblogs);
 window.addEventListener("load", getblogs);
 
 const getData = async () => {
+  console.log(id)
   const response = await fetch(
     `https://dep-mocha-six.vercel.app/api/v1/user/userdetails/${id}`,
     {
@@ -223,70 +227,82 @@ const getData = async () => {
     }
   );
   const data = await response.json();
-  console.log(data);
-};
-window.addEventListener("click", getData);
+  console.log(data)
+  document.querySelector('#name_input').value=data.user.name
+  document.querySelector('#slug').value=data.user.username
+  document.querySelector('#bio').value=data.user.bio
+  document.querySelector('.profile').style.cssText=`background-image:url('${data.user.avatar.secure_url}')`
 
-const getFollowers = async () => {
-  let token;
-if (localStorage.getItem("user")) {
-  token = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")).token
-    : "";
-} else {
-  alert("You are not Logged in ");
-  location.href = "../index.html";
+  if (response.ok) {
+    for (let i=0 ;i <data.user?.follows?.length ;i++  ) {
+          follower(i+1,data.user.follows[i].username,data.user.follows[i].userId);
+    }
+
+
+};
 }
-  function setCookie(name, value, options = {}) {
-    const defaults = {
-      path: "/", // The path for which the cookie is valid          // The expiration date (if empty, the cookie is a session cookie)
-      maxAge: "1000*60*60*60", // The maximum age of the cookie in seconds (if set, takes precedence over 'expires')           // The domain for which the cookie is valid
-      secure: false, // The cookie can only be transmitted over secure (HTTPS) connections
-    };
-  
-    // Merge provided options with defaults
-    const mergedOptions = { ...defaults, ...options };
-  
-    // Build the cookie string
-    let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
-  
-    // Add options to the cookie string
-    for (const [key, val] of Object.entries(mergedOptions)) {
-      if (val) {
-        cookieString += `; ${key}=${val}`;
-      }
-    }
-  
-    // Set the cookie
-    // document.cookie = cookieString;
-    return cookieString;
-    // console.log(cookieString)
-  }
-  const headerss = new Headers();
+window.addEventListener("load", getData);
 
-  headerss.append(
-    "Authentication",
-    `Bearer ${setCookie("token", token, {
-      expires: "Sun, 31 Dec 2023 23:59:59 GMT",
-      domain: "dep-mocha-six.vercel.app",
-      path: "/api/v1/user",
-    })}`
-  );
-  headerss.append("Accept", "*/*");
-  headerss.append("Connection", "keep-alive");
-  console.log("jbd");
-  console.log(headerss);
-  const response = await fetch(
-    "https://dep-mocha-six.vercel.app/api/v1/user/getFollowers",
-    {
-      mode: "cors",
-      headers: headerss,
-    }
-  );
-  const data = await response.json();
-  console.log(data);
-};
-window.addEventListener("keydown", getFollowers);
+// const getFollowers = async () => {
+//   let token;
+// if (localStorage.getItem("user")) {
+//   token = localStorage.getItem("user")
+//     ? JSON.parse(localStorage.getItem("user")).token
+//     : "";
+// } else {
+//   alert("You are not Logged in ");
+//   location.href = "../index.html";
+// }
+//   function setCookie(name, value, options = {}) {
+//     const defaults = {
+//       path: "/", // The path for which the cookie is valid          // The expiration date (if empty, the cookie is a session cookie)
+//       maxAge: "1000*60*60*60", // The maximum age of the cookie in seconds (if set, takes precedence over 'expires')           // The domain for which the cookie is valid
+//       secure: false, // The cookie can only be transmitted over secure (HTTPS) connections
+//     };
+  
+//     // Merge provided options with defaults
+//     const mergedOptions = { ...defaults, ...options };
+  
+//     // Build the cookie string
+//     let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+  
+//     // Add options to the cookie string
+//     for (const [key, val] of Object.entries(mergedOptions)) {
+//       if (val) {
+//         cookieString += `; ${key}=${val}`;
+//       }
+//     }
+  
+//     // Set the cookie
+//     // document.cookie = cookieString;
+//     return cookieString;
+//     // console.log(cookieString)
+//   }
+//   const headerss = new Headers();
+
+//   headerss.append(
+//     "Authentication",
+//     `Bearer ${setCookie("token", token, {
+//       expires: "Sun, 31 Dec 2023 23:59:59 GMT",
+//       domain: "dep-mocha-six.vercel.app",
+//       path: "/api/v1/user",
+//     })}`
+//   );
+//   headerss.append("Accept", "*/*");
+//   headerss.append("Connection", "keep-alive");
+//   console.log("jbd");
+//   console.log(headerss);
+//   const response = await fetch(
+//     "https://dep-mocha-six.vercel.app/api/v1/user/getFollowers",
+//     {
+//       mode: "cors",
+//       headers: headerss,
+//     }
+//   );
+//   const data = await response.json();
+//   console.log(data);
+// };
+// window.addEventListener("load", getFollowers);
 
 const followUser = async () => {
   

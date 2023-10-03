@@ -380,11 +380,13 @@ let getFollowers = async (e) => {
     );
     console.log(response);
     const data = await response.json();
+    console.log(data.user.follows[0].userId);
     if (response.ok) {
       for (let i=0 ;i <data.user?.follows?.length ;i++  ) {
-            follower(i+1,data.user.follows[i].username,data.user.follows[i]._id);
+            follower(i+1,data.user.follows[i].username,data.user.follows[i].userId);
       }
       console.log(data);
+      // console.log(userId)
       userhandle.value=data.user.name
       slug.value = data.user.username
       bio.value = data.user.bio
