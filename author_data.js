@@ -1,3 +1,31 @@
+function setCookie(name, value, options = {}) {
+  const defaults = {
+    path: "/", // The path for which the cookie is valid          // The expiration date (if empty, the cookie is a session cookie)
+    maxAge: "1000*60*60*60", // The maximum age of the cookie in seconds (if set, takes precedence over 'expires')           // The domain for which the cookie is valid
+    secure: false, // The cookie can only be transmitted over secure (HTTPS) connections
+  };
+
+  // Merge provided options with defaults
+  const mergedOptions = { ...defaults, ...options };
+
+  // Build the cookie string
+  let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+  // Add options to the cookie string
+  for (const [key, val] of Object.entries(mergedOptions)) {
+    if (val) {
+      cookieString += `; ${key}=${val}`;
+    }
+  }
+
+  // Set the cookie
+  // document.cookie = cookieString;
+  return cookieString;
+  // console.log(cookieString)
+}
+
+
+
 var ham = document.querySelector(".ico2");
 var cross = document.querySelector(".ico3");
 var follow_button = document.querySelector(".follow");
@@ -154,35 +182,38 @@ function getQueryParam(name) {
 const id = getQueryParam("id");
 console.log(id);
 
-const getBlogs = async () => {
+const getblogs = async (e) => {
+  e.preventDefault();
+  const id = JSON.parse(localStorage.getItem("user")).user._id;
+  const headerss = new Headers();
+  let token = JSON.parse(localStorage.getItem("user")).token
+  console.log(token)
+  headerss.append(
+    "Authentication",
+    `Bearer ${setCookie("token", token, {
+      expires: "Sun, 31 Dec 2023 23:59:59 GMT",
+      domain: "dep-mocha-six.vercel.app",
+      path: "/api/v1/user",
+    })}`
+  );
+  headerss.append("Accept", "/");
+  headerss.append("Connection", "keep-alive");
+  console.log(JSON.parse(localStorage.getItem("user")).user._id)
+  console.log("fhjsdvfhjvsdhjfvsdhjk")
   const response = await fetch(
-    "https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs",
+    `https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs/${id}`,
     {
+      method: "GET",
       mode: "cors",
-
-      method: "POST",
-      body: JSON.stringify({
-        id: id,
-      }),
     }
   );
   const data = await response.json();
+  // for Loop laga do
   console.log(data);
-  if (response.ok) {
-    for (let i = 0; i < data.blogs.length; i++) {
-      blog_component(
-        data.blogs[i].title,
-        data.blogs[i].description,
-        data.blogs[i].category,
-        "",
-        data.blogs[i].avatar.secure_url
-      );
-    }
-  } else {
-    alert(data.message);
-  }
 };
-window.addEventListener("load", getBlogs);
+
+// window.addEventListener("click", getblogs);
+window.addEventListener("load", getblogs);
 
 const getData = async () => {
   const response = await fetch(

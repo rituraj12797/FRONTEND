@@ -267,7 +267,7 @@ function hide_nav()
 // console.log(" hello world")
 
 
-function follower( follower_no , username , user_slug, user_blog_count  ) {
+function follower( follower_no , username , id  ) {
     // async function image() {
     //     data = 
     // }
@@ -280,20 +280,18 @@ function follower( follower_no , username , user_slug, user_blog_count  ) {
 <div class="info">
     <div class="name_user">${username}</div>
     <div class="follower_data">
-        <div class="slug_tag"> <span class="slug_text_small">Slug:</span> ${user_slug}</div>
-        <div class="blog_no">
-            <span>Blogs: </span> <span id="blog_count"> ${user_blog_count} </span>
-        </div>
+        
+       
     </div>
 </div>
-<a class="follow" style="color:#000000;text-decoration:none;display:flex;justify-content:center;align-items:center;" href="author_data.html">view</a>
+<a class="follow" style="color:#000000;text-decoration:none;display:flex;justify-content:center;align-items:center;" href="./author_data.html?id=${id}">view</a>
 
 </div>`
     follower_container.innerHTML += follower_component;
 }
 
 
-function blog_component() {   // to link api you can call apis hereand set titles as per response 
+function blog_component(img_src,titl,genr,id) {   // to link api you can call apis hereand set titles as per response 
     var title = "mecha";
     var discription = "rhbcxxhjvbhvhjvbcxhx hxch vitae deserunt adipisci reiciendis quia sint quasi, architecto voluptatum quis! vitae deserunt adipisci reiciendis quia sint quasi, architecto voluptatum quis! cxhjxhjgzghjbvb hjz vj";
     var genre = "Technology";
@@ -302,61 +300,63 @@ function blog_component() {   // to link api you can call apis hereand set title
     var blog_container = document.querySelector('.blogs_container');
     var blog_component = ` <div class="user_blog ${blog_count}">
 
-<div class="blog_image">
+<div class="blog_image" style="background-image:url('${img_src}')">
 </div>
 <div class="blog_desc">
-    <div class="title">${title}</div>
+    <div class="title">${titl}</div>
 
     <div class="blog_cat_and_like">
-        <div class="caetogry">${genre}</div>
+        <div class="caetogry">${genr}</div>
         <div class="likes">Likes: <span class="like">${like_count}</span> </div>
     </div>
-    <div class="Brief">${discription}
-    </div>
+   
     <div class="view">
         <div id="view_text">
-           <a href="./blogRead.html" id="read_more_button"> Read more </a>
+           <a href="./blogRead.html?id=${id}" id="read_more_button"> Read more </a>
         </div>
     </div>
 </div>
 </div>`
     blog_container.innerHTML+=blog_component;
+    console.log(" i haev wored")
 }
 
-const getblogs = async (e) => {
-    e.preventDefault();
-    const id = JSON.parse(localStorage.getItem("user")).user.id;
-    const headerss = new Headers();
-  
-    headerss.append(
-      "Authentication",
-      `Bearer ${setCookie("token", token, {
-        expires: "Sun, 31 Dec 2023 23:59:59 GMT",
-        domain: "dep-mocha-six.vercel.app",
-        path: "/api/v1/user",
-      })}`
-    );
-    headerss.append("Accept", "*/*");
-    headerss.append("Connection", "keep-alive");
-    console.log(JSON.parse(localStorage.getItem("user")).user._id)
-    const response = await fetch(
-      "https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id: JSON.parse(localStorage.getItem("user")).user.id,
-        }),
-        headers: headerss,
-        mode: "cors",
-      }
-    );
-    const data = await response.json();
-    // for Loop laga do
-    console.log(data);
-  };
-  
-  window.addEventListener("load", getblogs);
-  
+const getblogs = async () => {
+  // e.preventDefault();
+  const id = JSON.parse(localStorage.getItem("user")).user._id;
+  const headerss = new Headers();
+
+  headerss.append(
+    "Authentication",
+    `Bearer ${setCookie("token", token, {
+      expires: "Sun, 31 Dec 2023 23:59:59 GMT",
+      domain: "dep-mocha-six.vercel.app",
+      path: "/api/v1/user",
+    })}`
+  );
+  headerss.append("Accept", "/");
+  headerss.append("Connection", "keep-alive");
+  console.log(JSON.parse(localStorage.getItem("user")).user._id)
+  console.log("fhjsdvfhjvsdhjfvsdhjk")
+  const response = await fetch(
+    `https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs/${id}`,
+    {
+      method: "GET",
+      mode: "cors",
+    }
+  );
+  const data = await response.json();
+  // for Loop laga do
+  console.log(data);
+  if (response.ok) {
+    for (let i=0 ;i <data.blogs.length ;i++  ) {
+      // img_src,titl,genr,id
+      blog_component(data.blogs[i].thumbnail.secure_url,data.blogs[i].title,data.blogs[i].category,data.blogs[i]._id);
+    }
+};
+}
+
+ getblogs();
 
 let getFollowers = async (e) => {
     e.preventDefault();
@@ -381,11 +381,10 @@ let getFollowers = async (e) => {
     console.log(response);
     const data = await response.json();
     if (response.ok) {
-      for (let i=0 ;i <data.user.follows.length ;i++  ) {
-            follower();
+      for (let i=0 ;i <data.user?.follows?.length ;i++  ) {
+            follower(i+1,data.user.follows[i].username,data.user.follows[i]._id);
       }
       console.log(data);
-      
       userhandle.value=data.user.name
       slug.value = data.user.username
       bio.value = data.user.bio
