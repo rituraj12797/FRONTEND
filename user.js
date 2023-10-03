@@ -338,12 +338,13 @@ const getblogs = async (e) => {
     );
     headerss.append("Accept", "*/*");
     headerss.append("Connection", "keep-alive");
+    console.log(JSON.parse(localStorage.getItem("user")).user._id)
     const response = await fetch(
       "https://dep-mocha-six.vercel.app/api/v1/user/authorBlogs",
       {
         method: "POST",
         body: JSON.stringify({
-          id: JSON.parse(localStorage.getItem("user")).user._id,
+          id: JSON.parse(localStorage.getItem("user")).user.id,
         }),
         headers: headerss,
         mode: "cors",
