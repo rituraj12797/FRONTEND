@@ -3,7 +3,7 @@
 ## Screenshots
 
 
-![WhatsApp Image 2023-10-03 at 23 39 08](https://github.com/rituraj12797/FRONTEND/assets/120770641/cdfe584e-ddc0-4256-8650-87c2fd019c56)
+
 ![WhatsApp Image 2023-10-03 at 23 38 37](https://github.com/rituraj12797/FRONTEND/assets/120770641/837eb7b2-26ee-4c36-a2f2-387ac755237a)
 ![WhatsApp Image 2023-10-03 at 23 38 43](https://github.com/rituraj12797/FRONTEND/assets/120770641/aaa0947a-fbf5-47be-ab10-d5beefe0abc3)
 ![WhatsApp Image 2023-10-03 at 23 38 58](https://github.com/rituraj12797/FRONTEND/assets/120770641/ec40e828-c710-45b3-8c64-f847e8c5b3f0)
