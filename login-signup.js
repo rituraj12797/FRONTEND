@@ -1,6 +1,7 @@
 const signUpButton=document.getElementById("signUp")
 const signInButton=document.getElementById("signIn")
 const container=document.getElementById("container")
+container.classList.add('right-panel-active')
 // const newSignIn=document.querySelector(".hidden-sign-in")
 // const newSignUp=document.querySelector(".hidden-sign-up")
 const signInContainer=document.querySelector(".sign-in-container")

@@ -80,7 +80,8 @@ input:focus{
   border-radius: 2em;
   box-shadow: 0 14px 28px rgba(128, 127, 127, 0.274), 0 10px 10px rgba(141, 141, 141, 0.171);
   position: relative;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
   width: 650px;
   max-width: 100%;
   min-height: min(80vh,500px);
@@ -141,7 +142,8 @@ opacity: 0;
   left: 50%;
   width: 50%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
   transition: transform 0.5s ease-in-out;
   z-index: 100;
 }
