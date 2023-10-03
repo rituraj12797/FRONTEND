@@ -78,26 +78,27 @@ let GET_RECENT_BLOGS = async () => {
     const  data = await response.json()
 
     console.log(data)
+    for (let i = 0; i < 4; i++) {
+        
+        document.querySelector(`.hd${i+1}`).textContent=data.blogs[i].title
+        document.querySelector(`.td${i+1}`).textContent=data.blogs[i].description
+        document.querySelector(`.e${i+1}`).setAttribute("href",`./blogRead.html?id=${data.blogs[i]._id}`)
+        document.querySelector(`.featured_blog${i+1}`).style.cssText=`background-image:url(${data.blogs[i].thumbnail.secure_url});`
+    }
 
-    document.querySelector('.hd1').textContent=data.blogs[0].title
-    document.querySelector('.td1').textContent=data.blogs[0].description
-    document.querySelector('.e1').setAttribute("href",`./blogRead.html?id=${data.blogs[0]._id}`)
-    document.querySelector('.featured_blog1').style.cssText=`background-image:url(${data.blogs[0].thumbnail.secure_url});`
-    
-    document.querySelector('.hd2').textContent=data.blogs[1].title
-    document.querySelector('.td2').textContent=data.blogs[1].description
-    document.querySelector('.e2').setAttribute("href",`./blogRead.html?id=${data.blogs[1]._id}`)
-    document.querySelector('.featured_blog2').style.cssText=`background-image:url(${data.blogs[1].thumbnail.secure_url});`
-    
-    document.querySelector('.hd3').textContent=data.blogs[2].title
-    document.querySelector('.td3').textContent=data.blogs[2].description
-    document.querySelector('.e3').setAttribute("href",`./blogRead.html?id=${data.blogs[2]._id}`)
-    document.querySelector('.featured_blog3').style.cssText=`background-image:url(${data.blogs[2].thumbnail.secure_url});`
-    
-    document.querySelector('.hd4').textContent=data.blogs[3].title
-    document.querySelector('.td4').textContent=data.blogs[3].description
-    document.querySelector('.e4').setAttribute("href",`./blogRead.html?id=${data.blogs[3]._id}`)
-    document.querySelector('.featured_blog4').style.cssText=`background-image:url(${data.blogs[3].thumbnail.secure_url});`
+
+    for (let i = 0; i < 5; i++) {
+        document.querySelector(`.ct${i+1}`).textContent=data.blogs[i+4].category
+        document.querySelector(`.he${i+1}`).textContent=data.blogs[i+4].title
+        // document.querySelector(`.dc${i+1}`).textContent=data.blogs[i+4].description
+        document.querySelector(`.rm${i+1}`).setAttribute("href",`./blogRead.html?id=${data.blogs[i+4]._id}`)
+
+        
+    }
+
+
+
+
 
 
 }
