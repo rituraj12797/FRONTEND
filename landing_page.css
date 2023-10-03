@@ -244,19 +244,6 @@ background-image: linear-gradient(black,black);
     start;
     align-items: center;
 }
-.featured_blog1
-{
-background-image: url('./assets/pic1.jpg');
-}
-
-.featured_blog3
-{
-background-image: url('./assets/cup.png');
-}
-.featured_blog4
-{
-    background-image: url('/assets/time.png');
-}
 .discription_featured_blog1
 {
     height: 75%;
@@ -303,7 +290,7 @@ background-image: url('./assets/cup.png');
     background-size: cover;
     width: 100%;
     background-image: linear-gradient(to right,rgb(45, 71, 237),rgb(255, 0, 0));
-    background-image: url('./assets/pic2.jpg');
+    /* background-image: url('./assets/pic2.jpg'); */
 }
 .main_part2
 {

@@ -58,17 +58,17 @@ document.querySelector('.right_button').addEventListener('click',()=>
    }
 })
 
-let ALLBLOGS =  async () => { 
+// let ALLBLOGS =  async () => { 
  
-    const response  =await fetch("https://dep-mocha-six.vercel.app/api/v1/blogs/getAllblogs")
+//     const response  =await fetch("https://dep-mocha-six.vercel.app/api/v1/blogs/getAllblogs")
  
-    const data = await response.json()
-    // this is the api to fetch all blogs 
+//     const data = await response.json()
+//     // this is the api to fetch all blogs 
 
-    console.log(data) 
+//     console.log(data) 
 
-}
-window.addEventListener("load" , ALLBLOGS) 
+// }
+// window.addEventListener("load" , ALLBLOGS)
 
 // To get recent blogs 
 
@@ -78,6 +78,28 @@ let GET_RECENT_BLOGS = async () => {
     const  data = await response.json()
 
     console.log(data)
+
+    document.querySelector('.hd1').textContent=data.blogs[0].title
+    document.querySelector('.td1').textContent=data.blogs[0].description
+    document.querySelector('.e1').setAttribute("href",`./blogRead.html?id=${data.blogs[0]._id}`)
+    document.querySelector('.featured_blog1').style.cssText=`background-image:url(${data.blogs[0].thumbnail.secure_url});`
+    
+    document.querySelector('.hd2').textContent=data.blogs[1].title
+    document.querySelector('.td2').textContent=data.blogs[1].description
+    document.querySelector('.e2').setAttribute("href",`./blogRead.html?id=${data.blogs[1]._id}`)
+    document.querySelector('.featured_blog2').style.cssText=`background-image:url(${data.blogs[1].thumbnail.secure_url});`
+    
+    document.querySelector('.hd3').textContent=data.blogs[2].title
+    document.querySelector('.td3').textContent=data.blogs[2].description
+    document.querySelector('.e3').setAttribute("href",`./blogRead.html?id=${data.blogs[2]._id}`)
+    document.querySelector('.featured_blog3').style.cssText=`background-image:url(${data.blogs[2].thumbnail.secure_url});`
+    
+    document.querySelector('.hd4').textContent=data.blogs[3].title
+    document.querySelector('.td4').textContent=data.blogs[3].description
+    document.querySelector('.e4').setAttribute("href",`./blogRead.html?id=${data.blogs[3]._id}`)
+    document.querySelector('.featured_blog4').style.cssText=`background-image:url(${data.blogs[3].thumbnail.secure_url});`
+
+
 }
 window.addEventListener("load" , GET_RECENT_BLOGS)
 
